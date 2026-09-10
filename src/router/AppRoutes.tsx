@@ -7,10 +7,12 @@ import { DestinationDetailPage } from '../pages/DestinationDetailPage';
 import { SavedPage } from '../pages/SavedPage';
 import { TripsPage } from '../pages/TripsPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { Playground } from '../../playground/Playground';
 
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
+      <Route path="/playground" element={<Playground />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="explore" element={<ExplorePage />} />
