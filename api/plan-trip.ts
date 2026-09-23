@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI, Type } from '@google/genai';
-import { PlanTripRequest } from '../src/types/planner';
-import { parseAndValidateItinerary } from '../src/utils/aiPlannerValidator';
+import { PlanTripRequest } from '../src/types/planner.js';
+import { parseAndValidateItinerary } from '../src/utils/aiPlannerValidator.js';
 
 function isTransientError(error: unknown): boolean {
   if (!error) return false;

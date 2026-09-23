@@ -1,4 +1,4 @@
-import { TripItinerary, TripItineraryDay } from '../types/planner';
+import { TripItinerary, TripItineraryDay } from '../types/planner.js';
 
 /**
  * Parses and strictly validates raw string text returned by Claude into a TripItinerary structure.
