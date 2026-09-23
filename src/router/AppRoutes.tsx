@@ -6,6 +6,7 @@ import { ExplorePage } from '../pages/ExplorePage';
 import { DestinationDetailPage } from '../pages/DestinationDetailPage';
 import { SavedPage } from '../pages/SavedPage';
 import { TripsPage } from '../pages/TripsPage';
+import { PlannerPage } from '../pages/PlannerPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { Playground } from '../../playground/Playground';
 
@@ -19,6 +20,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="destination/:id" element={<DestinationDetailPage />} />
         <Route path="saved" element={<SavedPage />} />
         <Route path="trips" element={<TripsPage />} />
+        <Route path="plan" element={<PlannerPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

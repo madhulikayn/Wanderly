@@ -27,7 +27,11 @@ export const HeroSection: React.FC = () => {
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=85"
+          srcSet="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=85 800w, https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=85 1200w, https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=85 2000w"
+          sizes="100vw"
           alt="Cinematic Travel Landscape"
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover object-center scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/50" />

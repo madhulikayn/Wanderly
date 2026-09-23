@@ -5,6 +5,7 @@ import { Trip, TripDay } from '../../types/trip';
 import { Destination } from '../../types/destination';
 import { Button } from '../ui/Button';
 import { saveUserTrip } from '../../utils/storage';
+import { useModalAccessibility } from '../common/useModalAccessibility';
 
 interface CreateTripModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
   const [endDate, setEndDate] = useState('');
   const [budget, setBudget] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const modalRef = useModalAccessibility(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -154,14 +156,15 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
       <div
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
         onClick={handleClose}
+        aria-hidden="true"
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl z-10 my-8">
+      <div ref={modalRef} tabIndex={-1} className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl z-10 my-8" role="dialog" aria-modal="true" aria-labelledby="create-trip-title">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -173,7 +176,7 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
             <Compass className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white font-heading">Create New Trip</h2>
+            <h2 id="create-trip-title" className="text-2xl font-bold text-white font-heading">Create New Trip</h2>
             <p className="text-xs text-slate-400">Plan your itinerary and track your upcoming vacation.</p>
           </div>
         </div>
@@ -191,12 +194,14 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
               placeholder="e.g. Summer Break in Santorini"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              aria-invalid={Boolean(errors.title)}
+              aria-describedby={errors.title ? 'trip-name-error' : undefined}
               className={`w-full px-4 py-2.5 rounded-xl bg-slate-950 border ${
                 errors.title ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-emerald-500 focus:ring-emerald-500/30'
               } text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all`}
             />
             {errors.title && (
-              <p className="flex items-center gap-1 text-xs text-rose-400 mt-1">
+              <p id="trip-name-error" className="flex items-center gap-1 text-xs text-rose-400 mt-1">
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>{errors.title}</span>
               </p>
@@ -217,6 +222,8 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
                   setCustomDestinationName('');
                 }
               }}
+              aria-invalid={Boolean(errors.destination)}
+              aria-describedby={errors.destination ? 'trip-destination-error' : undefined}
               className={`w-full px-4 py-2.5 rounded-xl bg-slate-950 border ${
                 errors.destination ? 'border-rose-500' : 'border-slate-800 focus:border-emerald-500'
               } text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all`}
@@ -236,10 +243,13 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
                 <div className="relative">
                   <MapPin className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
                   <input
+                    id="custom-destination"
                     type="text"
+                    aria-label="Custom destination name"
                     placeholder="Enter destination name (e.g. Reykjavik, Iceland)"
                     value={customDestinationName}
                     onChange={(e) => setCustomDestinationName(e.target.value)}
+                    aria-describedby={errors.destination ? 'trip-destination-error' : undefined}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-all"
                   />
                 </div>
@@ -247,7 +257,7 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
             )}
 
             {errors.destination && (
-              <p className="flex items-center gap-1 text-xs text-rose-400 mt-1">
+              <p id="trip-destination-error" className="flex items-center gap-1 text-xs text-rose-400 mt-1">
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>{errors.destination}</span>
               </p>
@@ -268,13 +278,15 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
+                  aria-invalid={Boolean(errors.startDate)}
+                  aria-describedby={errors.startDate ? 'start-date-error' : undefined}
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border ${
                     errors.startDate ? 'border-rose-500' : 'border-slate-800 focus:border-emerald-500'
                   } text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all`}
                 />
               </div>
               {errors.startDate && (
-                <p className="flex items-center gap-1 text-xs text-rose-400 mt-1">
+                <p id="start-date-error" className="flex items-center gap-1 text-xs text-rose-400 mt-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.startDate}</span>
                 </p>
@@ -293,13 +305,15 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
+                  aria-invalid={Boolean(errors.endDate)}
+                  aria-describedby={errors.endDate ? 'end-date-error' : undefined}
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border ${
                     errors.endDate ? 'border-rose-500' : 'border-slate-800 focus:border-emerald-500'
                   } text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all`}
                 />
               </div>
               {errors.endDate && (
-                <p className="flex items-center gap-1 text-xs text-rose-400 mt-1">
+                <p id="end-date-error" className="flex items-center gap-1 text-xs text-rose-400 mt-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>{errors.endDate}</span>
                 </p>
@@ -322,13 +336,15 @@ export const CreateTripModal: React.FC<CreateTripModalProps> = ({ isOpen, onClos
                 placeholder="e.g. 1500"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
+                aria-invalid={Boolean(errors.budget)}
+                aria-describedby={errors.budget ? 'trip-budget-error' : undefined}
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border ${
                   errors.budget ? 'border-rose-500' : 'border-slate-800 focus:border-emerald-500'
                 } text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all`}
               />
             </div>
             {errors.budget && (
-              <p className="flex items-center gap-1 text-xs text-rose-400 mt-1">
+              <p id="trip-budget-error" className="flex items-center gap-1 text-xs text-rose-400 mt-1">
                 <AlertCircle className="w-3.5 h-3.5" />
                 <span>{errors.budget}</span>
               </p>

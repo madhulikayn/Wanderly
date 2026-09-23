@@ -5,6 +5,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { formatDateRange, formatCurrency } from '../../utils/formatters';
 import { saveUserTrip } from '../../utils/storage';
+import { useModalAccessibility } from '../common/useModalAccessibility';
 
 interface TripDetailModalProps {
   trip: Trip | null;
@@ -23,6 +24,7 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
   const [newActivityTitle, setNewActivityTitle] = useState('');
   const [newTimeSlot, setNewTimeSlot] = useState('Morning');
   const [newNotes, setNewNotes] = useState('');
+  const modalRef = useModalAccessibility(isOpen, onClose);
 
   if (!isOpen || !trip) return null;
 
@@ -87,14 +89,15 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
       <div
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-3xl rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl z-10 my-8 max-h-[90vh] flex flex-col">
+      <div ref={modalRef} tabIndex={-1} className="relative w-full max-w-3xl rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl z-10 my-8 max-h-[90vh] flex flex-col" role="dialog" aria-modal="true" aria-labelledby="trip-detail-title">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors z-20"
+          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors z-20 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
           aria-label="Close detail modal"
         >
           <X className="w-5 h-5" />
@@ -106,7 +109,7 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
             <Badge variant="emerald" className="uppercase text-[10px] tracking-wider mb-2">
               {trip.status}
             </Badge>
-            <h2 className="text-2xl font-bold text-white font-heading">{trip.title}</h2>
+            <h2 id="trip-detail-title" className="text-2xl font-bold text-white font-heading">{trip.title}</h2>
             <p className="text-xs text-slate-400 flex items-center gap-2 mt-1">
               <MapPin className="w-3.5 h-3.5 text-emerald-400" />
               <span>{trip.destination?.title}, {trip.destination?.location?.country}</span>
@@ -127,7 +130,7 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
         <div className="overflow-y-auto py-6 space-y-6 flex-1 pr-1">
           {/* Day Tabs */}
           {currentDays.length > 0 && (
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800/80">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800/80" role="group" aria-label="Select itinerary day">
               {currentDays.map((day) => {
                 const isActive = day.dayNumber === (activeDay?.dayNumber || 1);
                 const actCount = day.activities?.length || 0;
@@ -135,6 +138,7 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
                   <button
                     key={day.dayNumber}
                     onClick={() => setSelectedDayNumber(day.dayNumber)}
+                    aria-pressed={isActive}
                     className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${
                       isActive
                         ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
@@ -218,7 +222,9 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
+                    <label htmlFor="activity-time-slot" className="sr-only">Activity time slot</label>
                     <select
+                      id="activity-time-slot"
                       value={newTimeSlot}
                       onChange={(e) => setNewTimeSlot(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
@@ -230,7 +236,9 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
                     </select>
                   </div>
                   <div className="sm:col-span-2">
+                    <label htmlFor="activity-title" className="sr-only">Activity title</label>
                     <input
+                      id="activity-title"
                       type="text"
                       placeholder="Activity title (e.g. Visit Akrotiri Site)"
                       value={newActivityTitle}
@@ -241,7 +249,9 @@ export const TripDetailModal: React.FC<TripDetailModalProps> = ({
                 </div>
 
                 <div className="flex gap-2">
+                  <label htmlFor="activity-notes" className="sr-only">Optional activity notes</label>
                   <input
+                    id="activity-notes"
                     type="text"
                     placeholder="Optional notes or tips..."
                     value={newNotes}

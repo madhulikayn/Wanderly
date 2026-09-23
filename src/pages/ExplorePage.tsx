@@ -112,6 +112,7 @@ export const ExplorePage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search destinations by name, country, or tag..."
+              aria-label="Search destinations"
               className="w-full pl-11 pr-10 py-3.5 bg-slate-950/80 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/60 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-200"
             />
             {searchQuery && (
@@ -167,13 +168,14 @@ export const ExplorePage: React.FC = () => {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-1">
+          <div className="flex flex-wrap gap-2 pt-1" role="group" aria-label="Filter by travel category">
             {CATEGORIES.map((category) => {
               const isActive = selectedCategory === category;
               return (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
+                  aria-pressed={isActive}
                   className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
                     isActive
                       ? 'bg-emerald-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/20 scale-[1.02]'
@@ -189,7 +191,7 @@ export const ExplorePage: React.FC = () => {
       </div>
 
       {/* Results Header / Counter */}
-      <div className="flex items-center justify-between text-sm text-slate-400 px-1">
+      <div className="flex items-center justify-between text-sm text-slate-400 px-1" aria-live="polite">
         <span className="font-medium text-slate-300">
           Showing <strong className="text-white font-bold">{filteredDestinations.length}</strong> {filteredDestinations.length === 1 ? 'destination' : 'destinations'} found
         </span>

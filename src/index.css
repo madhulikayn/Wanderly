@@ -15,6 +15,11 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+
+  :focus-visible {
+    outline: 2px solid #34d399;
+    outline-offset: 3px;
+  }
 }
 
 /* Glassmorphism & Custom Utility Classes */

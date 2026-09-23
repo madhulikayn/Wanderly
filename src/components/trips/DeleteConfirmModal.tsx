@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 import { Trip } from '../../types/trip';
 import { Button } from '../ui/Button';
+import { useModalAccessibility } from '../common/useModalAccessibility';
 
 interface DeleteConfirmModalProps {
   trip: Trip | null;
@@ -16,6 +17,8 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   onClose,
   onConfirm
 }) => {
+  const modalRef = useModalAccessibility(isOpen, onClose);
+
   if (!isOpen || !trip) return null;
 
   return (
@@ -24,13 +27,14 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
       <div
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl z-10 my-8 space-y-5">
+      <div ref={modalRef} tabIndex={-1} className="relative w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl z-10 my-8 space-y-5" role="dialog" aria-modal="true" aria-labelledby="delete-trip-title" aria-describedby="delete-trip-description">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
           aria-label="Close confirm dialog"
         >
           <X className="w-5 h-5" />
@@ -41,12 +45,12 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white font-heading">Delete Trip</h3>
+            <h3 id="delete-trip-title" className="text-lg font-bold text-white font-heading">Delete Trip</h3>
             <p className="text-xs text-slate-400">This action cannot be undone.</p>
           </div>
         </div>
 
-        <p className="text-sm text-slate-300 leading-relaxed">
+        <p id="delete-trip-description" className="text-sm text-slate-300 leading-relaxed">
           Are you sure you want to delete <strong className="text-white font-bold">"{trip.title}"</strong>?
           All itinerary details and notes for this trip will be permanently removed.
         </p>

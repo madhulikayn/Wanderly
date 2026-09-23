@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
               Discover curated luxury destinations, immersive travel guides, and effortless trip planning crafted for the modern traveler.
             </p>
-            <div className="flex items-center gap-2 text-xs text-slate-500 pt-2">
+            <div className="flex items-center gap-2 text-xs text-slate-400 pt-2">
               <Globe className="w-4 h-4 text-emerald-500" />
               <span>Global Travel Discovery Platform</span>
             </div>
@@ -70,7 +70,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>© {new Date().getFullYear()} Wanderly Inc. All rights reserved.</p>
           <div className="flex items-center gap-1">
             <span>Crafted with</span>

@@ -110,10 +110,11 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, o
 
           <Link
             to={`/destination/${destination.id}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group-hover:translate-x-0.5"
+            aria-label={`Explore ${destination.title}`}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group-hover:translate-x-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 rounded-md"
           >
             <span>Explore</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

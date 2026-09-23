@@ -68,6 +68,8 @@ export const InspirationSection: React.FC = () => {
             <img
               src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=85"
               alt="Kyoto Sacred Shrine"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />

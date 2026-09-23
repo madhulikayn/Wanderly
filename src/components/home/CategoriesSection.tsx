@@ -94,12 +94,15 @@ export const CategoriesSection: React.FC = () => {
             <button
               key={cat.id}
               onClick={() => handleCategoryClick(cat.categoryFilter)}
+                  aria-label={`Explore ${cat.name} destinations`}
               className="group relative h-48 rounded-2xl overflow-hidden border border-slate-800 text-left focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-all duration-300 hover:border-emerald-500/40 hover:shadow-xl hover:shadow-emerald-950/30"
             >
               {/* Image Background */}
               <img
                 src={cat.image}
                 alt={cat.name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/20 group-hover:via-slate-950/60 transition-colors" />
